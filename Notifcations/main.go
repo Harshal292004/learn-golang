@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"notifications/interfaces" // Adjust the import path based on your module name
+	"notifications/interfaces"
+	// Adjust the import path based on your module name
 )
 
 func main() {
@@ -33,4 +34,7 @@ func main() {
 		fmt.Println(msg)
 		fmt.Println("Importance Level:", importance)
 	}
+
+	errors.Divide()
+
 }
