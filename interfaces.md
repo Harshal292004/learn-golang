@@ -1,107 +1,96 @@
-- Interface
+# Go Concepts  
 
+### **Interfaces**  
+- An **interface** defines a set of methods. Any type that implements all the methods of the interface is said to implement that interface.  
+- Example of interface declaration:  
+  ```go  
+  type inter interface {  
+      meth1()  
+      meth2()  
+      meth3()  
+  }  
+  ```  
 
-declared as below :
+- A type implements an interface by providing method definitions. No explicit declaration of implementation is required.  
+  Example:  
+  ```go  
+  type struc struct{}  
 
+  func (s struc) meth1() {}  
+  func (s struc) meth2() {}  
+  func (s struc) meth3() {}  
 
-```go 
-type inter interface{
-    meth1(),
-    meth2(),
-    meth3()
-}
-```
+  // struc automatically implements the inter interface  
+  func getdetails(i inter) {}  
 
-for implementing the interface you just need to have the methods added to the strucutre and it will atomatically implement the interface 
+  var s = struc{}  
+  getdetails(s)  
+  ```  
 
-```go
-type struc struct{
+- **Key Point:** A type implements an interface automatically if it has the required methods.  
+- **Empty Interface:** Every type implements the empty interface `interface{}` because it has no method requirements.  
 
-}
+---
 
-func (s struc) meth1(){
+### **Type Switches**  
+- Type switches allow handling multiple types in a single statement.  
 
-}
+Example:  
+```go  
+switch v := i.(type) {  
+case int:  
+    fmt.Println("int", v)  
+case string:  
+    fmt.Println("string", v)  
+default:  
+    fmt.Println("unknown type")  
+}  
+```  
 
-func (s struc) meth2(){
-}
+---
 
+### **Named Interfaces**  
+- Interfaces can be named and used to define behaviors.  
 
-func (s struc) meth3(){
-}
+Example:  
+```go  
+type Copier interface {  
+    Copy(sourceFile, destinationFile string) (bytesCopied int)  
+}  
+```  
 
-// here the struc has implemented the iteer interface now soo can use struc as a interface inter
+---
 
-func getdetails(i inter){
+### **Defer in Go**  
+- The `defer` statement schedules a function to be executed after the surrounding function completes. It’s commonly used for cleanup tasks like closing files or releasing resources.  
+- Deferred function calls are pushed onto a stack and executed in Last-In-First-Out (LIFO) order.  
 
-}
-var s=struc{
+Example:  
+```go  
+func main() {  
+    defer fmt.Println("world")  
+    fmt.Println("hello")  
+}  
+// Output:  
+// hello world  
+```  
 
-}
+- Example of multiple `defer` statements:  
+```go  
+func main() {  
+    fmt.Println("counting")  
 
-getdetails(s)
-```
+    for i := 0; i < 10; i++ {  
+        defer fmt.Println(i)  
+    }  
 
-A type never declares that it implements a given interface. If an interface exists and a type has the proper methods defined, then the type automatically fulfills that interface.
+    fmt.Println("done")  
+}  
+// Output:  
+// counting  
+// done  
+// 9 8 7 6 5 4 3 2 1 0  
+}  
+```  
 
-A type can implement any number of interfaces in Go. For example, the empty interface, interface{}, is always implemented by every type because it has no requirements
-
-
-
--Tye Switches
-
-
-- Named Interfaces 
-
-```go 
-type Copier interface{
-    Copy(sourceFile string , destinationFile string) (bytesCopied int)
-}
-```
-
-- defer in go 
-
-Purpose: The defer statement in Go is used to schedule a function call to be executed after the surrounding function completes. It is commonly used for cleanup tasks, such as closing files, releasing resources, or unlocking mutexes.
-
-```go 
-func main() {
-	defer fmt.Println("world")
-
-	fmt.Println("hello")
-}
-```
-output:
-`hello world`
-
-
-the defer functions output are pushed onto stack  and then pop accordingly 
-
-```go
-func main() {
-	fmt.Println("counting")
-
-	for i := 0; i < 10; i++ {
-		defer fmt.Println(i)
-	}
-
-	fmt.Println("done")
-}
-```
-
-Output :
-
-```powershell
-counting
-done
-9
-8
-7
-6
-5
-4
-3
-2
-1
-0
-```
-
+---

@@ -1,154 +1,145 @@
-- Pointers
+# Go Concepts  
 
-Like C but no pointer arthemtic like below 
+### **Pointers**  
+- Go pointers are similar to C pointers, but pointer arithmetic is not allowed.  
+- Example:  
+  ```go  
+  func main() {  
+      i, j := 42, 34  
+      p := &i  // Pointer to i  
+      q := &j  // Pointer to j  
+      p = p + q  // Error: pointer arithmetic not allowed  
+      *p = *p / 37  // No problem: dereferencing is allowed  
+  }  
+  ```  
 
-```go
-//throws error 
-func main(){
-    i,j:=42,34
-    p:= &i //point to i
-    q:= &j //point to j 
-    p=p+q //throws error 
+---
 
-    *p= *p/37 // no problem here 
-}
-```
+### **Pointers to Structs**  
+- You can use pointers to structs, and access or modify their fields via the pointer.  
+- Example:  
+  ```go  
+  type Vertex struct {  
+      x, y int  
+  }
 
-- Pointer to struct 
+  func main() {  
+      v := Vertex{1, 2}  
+      p := &v  
+      p.x = 3435  // Modify using pointer  
+      // Or use:  
+      (*p).x = 3435  // Dereferencing pointer to access field  
+  }  
+  ```  
 
+---
 
-```go 
-type Vertex struct{
-    x int 
-    y int
-}
+### **Arrays**  
+- Arrays are fixed-size collections of elements.  
+- Example:  
+  ```go  
+  var a [2]string  
+  a[0] = "Hello"  
+  a[1] = "World"  
 
-func main(){
-    v:= Vertex{1,2}
-    p:= &v
-    p.x=3435
-    //or 
-    (*p).x=3435
-}
-```
+  primes := [6]int{2, 3, 5, 7, 11, 13}  // Initializing array  
+  ```  
 
-- Arrays 
+---
 
-```go 
-var a [2] string 
-a[0]= "Jello"
-a[1]= "Wld"
+### **Slices**  
+- Slices are more flexible than arrays, as they allow dynamic resizing.  
+- Example:  
+  ```go  
+  primes := []int{2, 3, 5, 7, 11, 13}  
+  var s []int = primes[1:4]  // Slice from index 1 to 3 (half-open)  
+  fmt.Println(s)  // Output: [3 5 7]  
+  ```
 
-primes:= [6]int{2,3,4,5}
+- **Important points:**  
+  - **Changing a slice** changes the corresponding elements in the underlying array.  
+  - Slices have both **length** (number of elements) and **capacity** (size of underlying array).  
+  - Zero-value of a slice is `nil`.  
 
-```
+- **Using `make` to create slices:**  
+  ```go  
+  a := make([]int, 0, 5)  // Create slice of length 0 and capacity 5  
+  ```
 
-- Slices 
+---
 
-```go 
-primes := []int{2, 3, 5, 7, 11, 13}
+### **Slice of Slices (2D Arrays)**  
+- A slice of slices can be used to represent 2D arrays.  
+- Example:  
+  ```go  
+  board := [][]string{  
+      []string{"_", "_", "_"},  
+      []string{"_", "_", "_"},  
+      []string{"_", "_", "_"},  
+  }  
+  board[0][0] = "X"  
+  board[2][2] = "O"  
+  ```  
 
-var s []int = primes[1:4]
-fmt.Println(s)
-```
+---
 
-half open includes the start excludes the last 
+### **Range**  
+- The `range` keyword is used to iterate over slices and maps.  
+- Example with a slice:  
+  ```go  
+  var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}  
+  for i, v := range pow {  
+      fmt.Printf("2**%d = %d\n", i, v)  
+  }
+  ```
 
-**Changing the elements of a slice modifies the corresponding elements of its underlying array.**
+- To skip values:  
+  ```go  
+  for _, v := range pow  // Skip index  
+  for i, _ := range pow  // Skip value  
+  ```  
 
-- *Slices have a capacity and length*
+---
 
-the cpacity is the length of the underlying array and the length is the number of elements contained by the slice 
+### **Maps**  
+- Maps are unordered collections of key-value pairs.  
+- Example of map declaration and initialization:  
+  ```go  
+  var m map[string]Vertex  // Declare map  
+  m = make(map[string]Vertex)  // Initialize map  
+  m["Bell Labs"] = Vertex{40.68433, -74.39967}  // Add an element  
+  ```  
 
-- Zero slice is nill
+- **Map Literal:**  
+  ```go  
+  var m = map[string]Vertex{  
+      "Google": {37.42202, -122.08408},  
+      "Bell Labs": {40.68433, -74.39967},  
+  }  
+  ```  
 
-- The Make function for the slice making 
+- **Mutating a Map:**  
+  - Insert or update: `m[key] = value`  
+  - Retrieve: `value = m[key]`  
+  - Delete: `delete(m, key)`  
+  - Test presence: `value, ok = m[key]`  
 
-```go 
-//creating dynamically sized array 
-// a:= make([]int,len(a),cap(a))
-a:= make([]int,0,5)
-```
+---
 
-- Slice of slices or 2D array 
+### **Passing Functions as Arguments**  
+- Functions in Go can be passed as arguments to other functions.  
+- Example:  
+  ```go  
+  func compute(fn func(float64) float64) {  
+      return fn(3)  
+  }
 
-```go 
-board:=[][]string{
-    []string{"_","_","_"},
-    []string{"_","_","_"},
-    []string{"_","_","_"}
-}
+  func main() {  
+      fn := func(x float64) float64 {  
+          return x * x  // Square the number  
+      }  
+      compute(fn)  
+  }  
+  ```  
 
-board[0][0]="X"
-board[2][2]="O"
-```
-
-- Range 
-
-```go 
-var pow=[]int{1,2,4,8,16,32,64,128}
-//  similar to js map((index,item)=>{})
-for i,v:=range pow{
-    fmt.Printf("2**%d = %d\n",i,v)
-}
-//skip the index or item 
-for _,v:=range pow 
-for i,_:= range pow
-```
-
-- Maps 
-
-The zero value of a map is nil. A nil map has no keys, nor can keys be added.
-
-```go 
-var m map[string]Vertex
-
-m= make(map[string]Vertex)
-m["BL"]=Vertex{
-    40.683,-74.54
-}
-```
-
-```go
-//map literal 
-var m = map[string]Vertex{
-	"Bell Labs": Vertex{
-		40.68433, -74.39967,
-	},
-	"Google": Vertex{
-		37.42202, -122.08408,
-	},
-}
-```
-
-- Mutating map 
-
-Insert or update an element in map m:
-
-m[key] = elem
-Retrieve an element:
-
-elem = m[key]
-Delete an element:
-
-delete(m, key)
-Test that a key is present with a two-value assignment:
-
-elem, ok = m[key]
-
-
-
-- Passing functions as argument 
-
-```go 
-func compute(fn func(float64) float64){
-    return fn(3)
-}
-
-func main(){
-    fn:=func(x float64) float64{
-        return x
-    }
-    compute(fn)
-}
-```
+---

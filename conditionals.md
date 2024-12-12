@@ -1,71 +1,88 @@
-- Only for loop 
+# Go Control Structures  
 
-```go
-for i:=0 ; i< 10 ; i++{
-    sum+=i
-}
-```
+### **For Loop**  
+- The only looping construct in Go.  
+- Example:  
+  ```go  
+  for i := 0; i < 10; i++ {  
+      sum += i  
+  }  
+  ```  
 
+---
 
-- Go's While 
+### **Go’s While Equivalent**  
+- A `for` loop without initialization and post statements behaves like a `while`.  
 
-```go 
-func main(){
-    sum:=1
-    for sum<1000{
-        sum+=sum
-    }
+Example:  
+```go  
+func main() {  
+    sum := 1  
+    for sum < 1000 {  
+        sum += sum  
+    }  
+    fmt.Println(sum)  
+}  
+```  
 
-    fmt.Println(sum)
-}
-```
+---
 
-- infinity 
+### **Infinite Loop**  
+- A `for` loop with no conditions creates an infinite loop.  
 
-```go 
-for{
+Example:  
+```go  
+for {  
+    // Infinite loop body  
+}  
+```  
 
-}
-```
+---
 
-- Conditionals 
+### **Conditionals**  
+- Simple `if` statement:  
+  ```go  
+  if x < 0 {  
+      // Code block  
+  }  
+  ```  
 
-```go 
-if x<0{
+- Short variable declaration in condition:  
+  ```go  
+  if v := math.Pow(x, n); v < lim {  
+      return v  
+  }  
+  ```  
 
-}
+---
 
-if v := math.Pow(x, n); v < lim {
-	return v
-}
+### **Switch Case**  
+- No `break` is needed; it’s implicit in Go.  
+- Use `fallthrough` to execute subsequent cases.  
 
-```
+Example:  
+```go  
+func getCreator(os string) string {  
+    var creator string  
+    switch os {  
+    case "linux":  
+        creator = "Linus Torvalds"  
+    case "windows":  
+        creator = "Bill Gates"  
 
+    // Multiple cases with fallthrough  
+    case "Mac OS":  
+        fallthrough  
+    case "Mac OS X":  
+        fallthrough  
+    case "mac":  
+        creator = "A Steve"  
 
-- Switch Case 
+    default:  
+        creator = "Unknown"  
+    }  
+    return creator  
+}  
+```  
 
-Notice that in Go, the break statement is not required at the end of a case to stop it from falling through to the next case. The break statement is implicit in Go.
-
-```go 
-func getCreator(os string) string {
-    var creator string
-    switch os {
-    case "linux":
-        creator = "Linus Torvalds"
-    case "windows":
-        creator = "Bill Gates"
-
-    // all three of these cases will set creator to "A Steve"
-    case "Mac OS":
-        fallthrough
-    case "Mac OS X":
-        fallthrough
-    case "mac":
-        creator = "A Steve"
-
-    default:
-        creator = "Unknown"
-    }
-    return creator
-}
-```
+---

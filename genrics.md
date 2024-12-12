@@ -1,24 +1,31 @@
-#### Genric 
+# Go Generics  
 
-- Type Parameters 
+### **Type Parameters**  
+- Functions can accept type parameters to enable generic programming.  
+- The type parameter is specified in square brackets (`[T]`).  
 
-```go 
-func Index[T comparable](s []T,x T){
+Example:  
+```go  
+func Index[T comparable](s []T, x T) {  
+    // Implementation  
+}  
+```  
+**Note:** The type parameter must satisfy constraints, such as `comparable` for types supporting `==`, `!=`.  
 
-}
-```
+---
 
-**Note**: The genric or the type provide should always implement the comparable type providing the `==` , `!=` etc 
+### **Generic Types in Go**  
+- Generic types are declared using the `any` constraint.  
+- `any` is a built-in alias for `interface{}`.  
 
-- Genric types in go 
+Example:  
+```go  
+type List[T any] struct {  
+    next *List[T]  
+    val  T  
+}  
+```  
 
-**Note**:  Go has `nil` not `null`
+**Note:** Go uses `nil`, not `null`, for representing zero values or absence of value.  
 
-this are declared with the help of `any` 
-
-```go 
-type List[T any] struct{
-    next *List[T]
-    val T
-}
-```
+---
