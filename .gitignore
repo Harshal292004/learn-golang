@@ -1,2 +1,4 @@
 */go.mod
 */go.work
+*/go.sum
+go.*
