@@ -65,7 +65,24 @@
   ```go  
   a := make([]int, 0, 5)  // Create slice of length 0 and capacity 5  
   ```
+---
+### **Deleting a value from slice**
+- You can use **append** to delete a value from slice
 
+```go
+func main() {
+	var movies = []int{4, 5, 6, 8, 9, 3}
+	fmt.Println(movies)
+	var valToDelete = 8
+	for index, val := range movies {
+		if val == valToDelete {
+			movies = append(movies[:index], movies[index+1:]...)
+			break
+		}
+	}
+	fmt.Println("Deleted array:", movies)
+}
+```
 ---
 
 ### **Slice of Slices (2D Arrays)**  
